@@ -66,19 +66,23 @@ public class JavaRushProject {
 //метод, создающий файл с новым текстом
 //им заканчиваются все три метода для шифрования/дешифровки
 
-//я хотела, чтобы пользователь сам вводил адрес нового файла через Scanner, но не получилось
-//даже просто имя файла не удается ввести, программа просто пропускает Scanner, переходя сразу к созданию файла
-//подскажите, пожалуйста, как правильно было бы сделать так, чтобы пользователь сам выбирал, куда сохранять новый файл?
-
+        System.out.println("Введите адрес нового файла");
+        String newFileAdress = scanner.next();
+        while (!newFileAdress.endsWith(".txt"))
+        {
+            System.out.println("Ошибка! Новый файл должен быть в формате .txt. Попробуйте снова или введите exit для выхода.");
+            newFileAdress = scanner.next();
+            if (newFileAdress.equalsIgnoreCase("exit")) break;
+        }
+        if (newFileAdress.equalsIgnoreCase("exit")) return;
         String newTextString = new String(newTextChars);
-        String newFileAdress = "d:\\newTextFile.txt";
         try {
             Path newFile = Path.of(newFileAdress);
             Files.createFile(newFile);
             Files.writeString(newFile, newTextString, utf8);
             System.out.println("Создан новый файл по адресу " + newFileAdress);
         } catch (IOException e) {
-            System.out.println("Ошибка! Не удалось создать файл по адресу" + newFileAdress);
+            System.out.println("Ошибка! Не удалось создать файл по адресу " + newFileAdress);
         }
     }
 
@@ -184,13 +188,13 @@ public class JavaRushProject {
 
     private static Boolean check(String testString) {
 //метод для проверки получившихся текстов
-        String[] substrings = testString.split(" ");
+        String[] substrings = testString.split(" |\n");
         boolean bool = true;
         for (int i = 0; i < substrings.length; i++) {
             char[] temp = substrings[i].toCharArray();
             for (int j = 0; j < temp.length; j++) {
                 if (j < (temp.length - 1)) {
-                    if (temp[j] == '.' || temp[j] == ',' || temp[j] == '?' || temp[j] == '!' || temp[j] == ':') {
+                    if (temp[j] == '(' || temp[j] == ',' || temp[j] == '?' || temp[j] == '!' || temp[j] == ':') {
                         bool = false;
                         break;
                     }
